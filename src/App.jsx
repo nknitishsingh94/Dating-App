@@ -31,6 +31,22 @@ function App() {
 
   const handleNext = () => setStep(prev => prev + 1);
 
+  const handleFinish = () => {
+    const text = `Hey! It's a Date! 🎉\n\n` +
+      `*Date & Time:* ${formData.freeDate ? new Date(formData.freeDate).toLocaleString('en-US', { weekday: 'long', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : 'TBD'}\n` +
+      `*Menu:* ${formData.favoriteFood} & ${formData.favoriteDrink}\n` +
+      `*Pickup At:* ${formData.pickupLocation}\n` +
+      `*Destination:* ${formData.favoriteCafe}, ${formData.location}\n` +
+      `*Phone Number:* ${formData.phoneNumber}\n\n` +
+      `Can't wait! 😘`;
+
+    const encodedText = encodeURIComponent(text);
+    const whatsappUrl = `https://wa.me/918795919866?text=${encodedText}`;
+    
+    window.open(whatsappUrl, '_blank');
+    handleNext();
+  };
+
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
     setFormData(prev => ({
@@ -228,7 +244,7 @@ function App() {
               <label><Phone size={16} style={{display:'inline', marginRight:'8px'}}/> Phone Number</label>
               <input type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleInputChange} placeholder="For coordination..." />
             </div>
-            <button className="btn" onClick={handleNext} disabled={!formData.favoriteCafe || !formData.location || !formData.pickupLocation || !formData.phoneNumber}>Finish 💖</button>
+            <button className="btn" onClick={handleFinish} disabled={!formData.favoriteCafe || !formData.location || !formData.pickupLocation || !formData.phoneNumber}>Finish 💖</button>
           </div>
         )}
 
