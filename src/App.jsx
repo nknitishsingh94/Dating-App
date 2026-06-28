@@ -65,7 +65,7 @@ function App() {
       `Can't wait! 😘`;
 
     const encodedText = encodeURIComponent(text);
-    const whatsappUrl = `https://wa.me/918795919866?text=${encodedText}`;
+    const whatsappUrl = `https://wa.me/919682847333?text=${encodedText}`;
     
     window.open(whatsappUrl, '_blank');
     setIsUploading(false);
