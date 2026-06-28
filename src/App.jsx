@@ -6,6 +6,7 @@ function App() {
   const [noButtonPosition, setNoButtonPosition] = useState({ top: 0, left: 0, absolute: false });
   const noButtonRef = useRef(null);
   const [isLocating, setIsLocating] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [timeLeft, setTimeLeft] = useState('');
 
   const [formData, setFormData] = useState({
@@ -31,19 +32,43 @@ function App() {
 
   const handleNext = () => setStep(prev => prev + 1);
 
-  const handleFinish = () => {
+  const handleFinish = async () => {
+    setIsUploading(true);
+    let imageUrl = '';
+
+    if (formData.picture) {
+      try {
+        const uploadData = new FormData();
+        uploadData.append('file', formData.picture);
+        
+        const response = await fetch('https://tmpfiles.org/api/v1/upload', {
+          method: 'POST',
+          body: uploadData,
+        });
+        
+        const data = await response.json();
+        if (data.status === 'success') {
+          imageUrl = data.data.url;
+        }
+      } catch (error) {
+        console.error("Image upload failed", error);
+      }
+    }
+
     const text = `Hey! It's a Date! 🎉\n\n` +
       `*Date & Time:* ${formData.freeDate ? new Date(formData.freeDate).toLocaleString('en-US', { weekday: 'long', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : 'TBD'}\n` +
       `*Menu:* ${formData.favoriteFood} & ${formData.favoriteDrink}\n` +
       `*Pickup At:* ${formData.pickupLocation}\n` +
       `*Destination:* ${formData.favoriteCafe}, ${formData.location}\n` +
       `*Phone Number:* ${formData.phoneNumber}\n\n` +
+      (imageUrl ? `*Photo:* ${imageUrl}\n\n` : '') +
       `Can't wait! 😘`;
 
     const encodedText = encodeURIComponent(text);
     const whatsappUrl = `https://wa.me/918795919866?text=${encodedText}`;
     
     window.open(whatsappUrl, '_blank');
+    setIsUploading(false);
     handleNext();
   };
 
@@ -244,7 +269,9 @@ function App() {
               <label><Phone size={16} style={{display:'inline', marginRight:'8px'}}/> Phone Number</label>
               <input type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleInputChange} placeholder="For coordination..." />
             </div>
-            <button className="btn" onClick={handleFinish} disabled={!formData.favoriteCafe || !formData.location || !formData.pickupLocation || !formData.phoneNumber}>Finish 💖</button>
+            <button className="btn" onClick={handleFinish} disabled={!formData.favoriteCafe || !formData.location || !formData.pickupLocation || !formData.phoneNumber || isUploading}>
+              {isUploading ? 'Preparing... ⏳' : 'Finish 💖'}
+            </button>
           </div>
         )}
 
