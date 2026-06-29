@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { Heart, Upload, Coffee, MapPin, CalendarHeart, Utensils, Sparkles, Car, Phone, Navigation } from 'lucide-react'
 
 function App() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0);
   const [noButtonPosition, setNoButtonPosition] = useState({ top: 0, left: 0, absolute: false });
   const noButtonRef = useRef(null);
   const [isLocating, setIsLocating] = useState(false);
@@ -160,6 +160,14 @@ function App() {
       </div>
 
       <div className="glass-container">
+        {step === 0 && (
+          <div>
+            <h1>Welcome Ashwani Sharma! ✨</h1>
+            <p className="sweet-note">I have something special to ask you...</p>
+            <button className="btn" onClick={handleNext}>Let's go! 🚀</button>
+          </div>
+        )}
+
         {step === 1 && (
           <div>
             <h1>Will you go on a date with me? 🥺</h1>
