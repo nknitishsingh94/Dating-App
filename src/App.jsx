@@ -162,9 +162,10 @@ function App() {
       <div className="glass-container">
         {step === 0 && (
           <div>
-            <h1>Welcome Ashwani Sharma! ✨</h1>
-            <p className="sweet-note">I have something special to ask you...</p>
-            <button className="btn" onClick={handleNext}>Let's go! 🚀</button>
+            <h1>You're Invited! ✨</h1>
+            <h2>To Become Ashwani Sharma's Date 🌹</h2>
+            <p className="sweet-note">Congratulations! You've been exclusively chosen for this special moment. Get ready for an unforgettable journey... Are you ready? 🥰</p>
+            <button className="btn" onClick={handleNext}>Yes, Let's go! 🚀</button>
           </div>
         )}
 
