@@ -14,12 +14,14 @@ function App() {
     favoriteFood: '',
     favoriteDrink: '',
     freeDate: '',
+    dateType: '',
     favoriteCafe: '',
     location: '',
     pickupLocation: '',
     phoneNumber: ''
   });
 
+  const dateTypeOptions = ["Movie Date 🍿", "Candlelight Dinner 🕯️", "Amusement Park 🎢", "Picnic 🧺", "Long Drive 🚗", "Arcade 🎮"];
   const foodOptions = ["Pizza 🍕", "Sushi 🍣", "Pasta 🍝", "Burgers 🍔", "Chinese 🍜", "Mexican 🌮"];
   const drinkOptions = ["Coffee ☕", "Boba 🧋", "Wine 🍷", "Cocktails 🍹", "Matcha 🍵", "Smoothies 🥤"];
 
@@ -57,6 +59,7 @@ function App() {
 
     const text = `Hey! It's a Date! 🎉\n\n` +
       `*Date & Time:* ${formData.freeDate ? new Date(formData.freeDate).toLocaleString('en-US', { weekday: 'long', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : 'TBD'}\n` +
+      `*Vibe:* ${formData.dateType}\n` +
       `*Menu:* ${formData.favoriteFood} & ${formData.favoriteDrink}\n` +
       `*Pickup At:* ${formData.pickupLocation}\n` +
       `*Destination:* ${formData.favoriteCafe}, ${formData.location}\n` +
@@ -163,7 +166,7 @@ function App() {
         {step === 0 && (
           <div>
             <h1>You're Invited! ✨</h1>
-            <h2>To Become Ashwani Sharma's Date 🌹</h2>
+            <h2>To Become Ashvani Sharma's Date 🌹</h2>
             <p className="sweet-note">Congratulations! You've been exclusively chosen for this special moment. Get ready for an unforgettable journey... Are you ready? 🥰</p>
             <button className="btn" onClick={handleNext}>Yes, Let's go! 🚀</button>
           </div>
@@ -217,6 +220,29 @@ function App() {
 
         {step === 4 && (
           <div>
+            <h2>What kind of date would you like? ✨</h2>
+            <p className="sweet-note">I want to make sure it's the perfect vibe for us! Let me know what you're in the mood for. 🥰</p>
+            <div className="input-group">
+              <label><Sparkles size={16} style={{display:'inline', marginRight:'8px'}}/> Pick the vibe</label>
+              <div className="options-grid">
+                {dateTypeOptions.map(type => (
+                  <button 
+                    key={type} 
+                    className={`option-btn ${formData.dateType === type ? 'selected' : ''}`}
+                    onClick={() => setFormData(prev => ({...prev, dateType: type}))}
+                  >
+                    {type}
+                  </button>
+                ))}
+              </div>
+              <input type="text" name="dateType" value={formData.dateType} onChange={handleInputChange} placeholder="Or type your own vibe..." style={{marginTop: '10px'}} />
+            </div>
+            <button className="btn" onClick={handleNext} disabled={!formData.dateType}>Next</button>
+          </div>
+        )}
+
+        {step === 5 && (
+          <div>
             <h2>Awesome! What's on the menu? 😋</h2>
             <p className="sweet-note">I want to treat you to your absolute favorites. Because a queen deserves nothing less than exactly what she craves! 🍽️✨</p>
             <div className="input-group">
@@ -253,7 +279,7 @@ function App() {
           </div>
         )}
 
-        {step === 5 && (
+        {step === 6 && (
           <div>
             <h2>Where are we going? 🗺️</h2>
             <p className="sweet-note">Whether it's a cozy cafe or a magical spot under the stars, any place is beautiful as long as I'm there with you. 🌌🚗</p>
@@ -284,7 +310,7 @@ function App() {
           </div>
         )}
 
-        {step === 6 && (
+        {step === 7 && (
           <>
             <div className="celebration-container">
               {[...Array(120)].map((_, i) => {
@@ -330,6 +356,10 @@ function App() {
                 <div className="pass-row">
                   <div className="pass-label">Time Remaining</div>
                   <div className="pass-value countdown-highlight">{timeLeft}</div>
+                </div>
+                <div className="pass-row">
+                  <div className="pass-label">Vibe</div>
+                  <div className="pass-value">{formData.dateType}</div>
                 </div>
                 <div className="pass-row">
                   <div className="pass-label">Menu</div>
